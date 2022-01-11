@@ -6,7 +6,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const port = process.env.PORT || 3000;
 
 module.exports = {
-    mode: "development",
     entry: {
         app: path.join(__dirname, 'src', 'index.js'),
     },
@@ -14,33 +13,49 @@ module.exports = {
         path: path.resolve(__dirname, './dist'),
         filename: "[name].js",
     },
-    resolve: {
-        extensions: [".js", ".jsx"]
-    },
     devServer: {
-        contentBase: path.join(__dirname, "./dist"), // 이 경로에 있는 파일이 변경될 때 다시 컴파일
-        host: 'localhost',
+        static: {
+            directory: path.join(__dirname, 'dist'),
+        },
+        compress: true,
         port: port,
-        open: true,
     },
     module: {
         rules: [
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_module/,
-                use:{
-                    loader: 'babel-loader'
-                }
-            }
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            ['@babel/preset-env'],
+                            [ "@babel/preset-react",]
+                        ],
+                        plugins: ['@babel/plugin-proposal-class-properties']
+                    },
+                },
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                            importLoaders: 1
+                        }
+                    },
+                ]
+            },
         ]
     },
     plugins: [
         new CleanWebpackPlugin(),
         new webpack.DefinePlugin({
-            VERSION: JSON.stringify("v.1"),
-            MAKE: JSON.stringify("SL"),
-            MAX_COUNT: JSON.stringify(999),
-            "api.domain": JSON.stringify("https://www.naver.com"),
+            VERSION: JSON.stringify('V.01'),
+            'api.address': JSON.stringify('object'),
         }),
         new HtmlWebpackPlugin({
             hash: true,

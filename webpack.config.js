@@ -28,10 +28,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: [
-                            ['@babel/preset-env'],
-                            [ "@babel/preset-react",]
-                        ],
+                        presets: ['@babel/preset-env', '@babel/preset-react'],
                         plugins: ['@babel/plugin-proposal-class-properties']
                     },
                 },
@@ -54,8 +51,8 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new webpack.DefinePlugin({
-            VERSION: JSON.stringify('V.01'),
-            'api.address': JSON.stringify('object'),
+            VERSION: JSON.stringify(' V.01 '),
+            'api.address': JSON.stringify(' DefinePlugin Test '),
         }),
         new HtmlWebpackPlugin({
             hash: true,
